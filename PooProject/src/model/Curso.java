@@ -1,3 +1,5 @@
+package model;
+
 public class Curso {
     private String nome;
     private String sigla;

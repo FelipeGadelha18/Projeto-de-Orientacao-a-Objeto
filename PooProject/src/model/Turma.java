@@ -1,3 +1,5 @@
+package model;
+
 public class Turma {
     private String curso;
     private String serieSemestre;
@@ -13,5 +15,13 @@ public class Turma {
 
     public String getSerieSemestre() {
         return serieSemestre;
+    }
+    
+    public String getRelatorio()
+    {
+        String s = "";
+        s += "Curso: " + this.curso + "\n";
+        s += "      Semestre: " + this.serieSemestre;
+        return s;
     }
 }

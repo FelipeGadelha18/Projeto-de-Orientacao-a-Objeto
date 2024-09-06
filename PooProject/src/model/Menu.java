@@ -1,12 +1,12 @@
-import java.util.ArrayList;
-import java.util.List;
+package model;
+
+import controle.Controle;
 import java.util.Scanner;
 
-public class Menu {
+public class Menu 
+{
     private Scanner scanner = new Scanner(System.in);
-    private List<Aluno> alunos = new ArrayList<>();
-    private List<Funcionario> funcionarios = new ArrayList<>();
-    private List<Turma> turmas = new ArrayList<>();
+    private Controle controle = new Controle();
 
     public void exibirMenu() {
         String opcao = "";
@@ -15,10 +15,10 @@ public class Menu {
             System.out.println("1. Incluir um novo aluno");
             System.out.println("2. Incluir um novo funcionario");
             System.out.println("3. Incluir uma nova turma");
-            System.out.println("4. Emitir relatorio de aluno");
-            System.out.println("5. Emitir relatorio de funcionario");
-            System.out.println("6. Listar todos os funcionarios pelo nome");
-            System.out.println("7. Mostrar total de gastos com funcionarios");
+            System.out.println("4. Emitir relatorio dos alunos");
+            System.out.println("5. Emitir relatorio dos funcionarios");
+            System.out.println("6. Listar todos os funcionarios");
+            //System.out.println("7. Mostrar total de gastos com funcionarios");
             System.out.println("8. Listar todas as turmas");
             System.out.println("9. Mudar aluno de turma");
             System.out.println("10. Sair");
@@ -50,13 +50,13 @@ public class Menu {
                 listarFuncionarios();
                 break;
             case "7":
-                mostrarGastosFuncionarios();
+                //mostrarGastosFuncionarios();
                 break;
             case "8":
                 listarTurmas();
                 break;
             case "9":
-                mudarAlunoDeTurma();
+                //mudarAlunoDeTurma();
                 break;
             case "10":
                 System.out.println("Saindo...");
@@ -76,9 +76,29 @@ public class Menu {
 
         System.out.print("Digite a data de nascimento do aluno (dd/mm/aaaa): ");
         String dataNascimento = scanner.nextLine();
+        
+        System.out.println("Deseja definir senha?(S/N)");
+        String s = scanner.nextLine();
+        
+        Aluno aluno;
+        switch(s)
+        {
+            case "S":
+                System.out.print("Digite o usuario(id): ");
+                String id = scanner.nextLine();
 
-        Aluno aluno = new Aluno(nome, matricula, dataNascimento);
-        alunos.add(aluno);
+                System.out.print("Digite a senha: ");
+                String senha = scanner.nextLine();
+
+                aluno = new Aluno(nome, matricula, dataNascimento, id, senha);
+                controle.cadastrarAluno(matricula, aluno);
+                break;
+                
+            case "N":
+                aluno = new Aluno(nome, matricula, dataNascimento);
+                controle.cadastrarAluno(matricula, aluno);
+                break;
+        }
 
         System.out.println("Aluno cadastrado com sucesso!");
     }
@@ -93,9 +113,32 @@ public class Menu {
 
         System.out.print("Digite o salario do funcionario: ");
         double salario = Double.parseDouble(scanner.nextLine());
+        
+        System.out.print("Digite a carga horaria: ");
+        double cargahoraria = Double.parseDouble(scanner.nextLine());
+        
+        System.out.println("Deseja definir senha?(S/N)");
+        String s = scanner.nextLine();
+        
+        Funcionarios funcionario;
+        switch(s)
+        {
+            case "S":
+                System.out.print("Digite o usuario(id): ");
+                String id = scanner.nextLine();
 
-        Funcionario funcionario = new Funcionario(nome, cpf, salario);
-        funcionarios.add(funcionario);
+                System.out.print("Digite a senha: ");
+                String senha = scanner.nextLine();
+
+                funcionario = new Funcionarios(nome, cpf, salario,cargahoraria, id, senha);
+                controle.cadastrarFuncionarios(cpf, funcionario);
+                break;
+                
+            case "N":
+                funcionario = new Funcionarios(nome, cpf, salario,cargahoraria);
+                controle.cadastrarFuncionarios(cpf, funcionario);
+                break;
+        }
 
         System.out.println("Funcionario cadastrado com sucesso!");
     }
@@ -109,57 +152,67 @@ public class Menu {
         String serieSemestre = scanner.nextLine();
 
         Turma turma = new Turma(curso, serieSemestre);
-        turmas.add(turma);
+        controle.cadastrarTurma(curso, turma);
 
         System.out.println("Turma cadastrada com sucesso!");
     }
 
     // Método para emitir relatório de aluno
     private void emitirRelatorioAluno() {
-        if (alunos.isEmpty()) {
+        if (controle.getAlunos().isEmpty()) {
             System.out.println("Nenhum aluno cadastrado.");
-        } else {
-            System.out.println("Relatorio de Alunos:");
-            for (Aluno aluno : alunos) {
-                System.out.println("Nome: " + aluno.getNome());
-                System.out.println("Matricula: " + aluno.getMatricula());
-                System.out.println("Data de Nascimento: " + aluno.getDataNascimento());
+        } 
+        else 
+        {
+            System.out.println("\nRelatorio de Alunos:");
+            for (Aluno aluno : controle.getAlunos().values()) 
+            {
                 System.out.println("---------------------------");
+                System.out.println(aluno.getRelatorio());
             }
+            System.out.println("---------------------------\n");
         }
     }
 
     // Método para emitir relatório de funcionário
     private void emitirRelatorioFuncionario() {
-        if (funcionarios.isEmpty()) {
+        if (controle.getFuncionarios().isEmpty()) {
             System.out.println("Nenhum funcionario cadastrado.");
-        } else {
-            System.out.println("Relatorio de Funcionarios:");
-            for (Funcionario funcionario : funcionarios) {
-                System.out.println("Nome: " + funcionario.getNome());
-                System.out.println("CPF: " + funcionario.getCpf());
-                System.out.println("Salario: " + funcionario.getSalario());
+        } 
+        else 
+        {
+            System.out.println("\nRelatorio de Funcionarios:");
+
+            for(Funcionarios f : controle.getFuncionarios().values())
+            {
                 System.out.println("---------------------------");
+                System.out.println(f.getRelatorio());
             }
+            System.out.println("---------------------------\n");
         }
     }
 
     // Método para listar todos os funcionários pelo nome
     private void listarFuncionarios() {
-        if (funcionarios.isEmpty()) {
+        if (controle.getFuncionarios().isEmpty()) {
             System.out.println("Nenhum funcionario cadastrado.");
-        } else {
-            System.out.println("Funcionarios cadastrados:");
-            for (Funcionario funcionario : funcionarios) {
-                System.out.println("Nome: " + funcionario.getNome());
+        } 
+        else 
+        {
+            System.out.println("\nLista de Funcionarios:");
+            for (Funcionarios f : controle.getFuncionarios().values()) 
+            {
+                System.out.println("---------------------------");
+                System.out.println(f.getNome());
             }
+            System.out.println("---------------------------\n");
         }
     }
 
     // Método para mostrar total de gastos com funcionários
     private void mostrarGastosFuncionarios() {
         double totalGastos = 0;
-        for (Funcionario funcionario : funcionarios) {
+        for (Funcionarios funcionario : controle.getFuncionarios().values()) {
             totalGastos += funcionario.getSalario();
         }
         System.out.println("Total de gastos com funcionários: " + totalGastos);
@@ -167,12 +220,14 @@ public class Menu {
 
     // Método para listar todas as turmas
     private void listarTurmas() {
-        if (turmas.isEmpty()) {
+        if (controle.getTurmas().isEmpty()) {
             System.out.println("Nenhuma turma cadastrada.");
         } else {
             System.out.println("Turmas cadastradas:");
-            for (Turma turma : turmas) {
-                System.out.println("Curso: " + turma.getCurso() + " - Série/Semestre: " + turma.getSerieSemestre());
+            
+            for (Turma turma : controle.getTurmas().values()) {
+                System.out.println("\nCurso: " + turma.getCurso() + "\nSerie/Semestre: " + turma.getSerieSemestre());
+                System.out.println("---------------------------");
             }
         }
     }
@@ -183,7 +238,7 @@ public class Menu {
         String matricula = scanner.nextLine();
 
         Aluno alunoEncontrado = null;
-        for (Aluno aluno : alunos) {
+        for (Aluno aluno : controle.getAlunos().values()) {
             if (aluno.getMatricula().equals(matricula)) {
                 alunoEncontrado = aluno;
                 break;
@@ -193,7 +248,11 @@ public class Menu {
         if (alunoEncontrado != null) {
             System.out.print("Digite a nova turma (curso): ");
             String novaTurma = scanner.nextLine();
-            alunoEncontrado.setTurma(novaTurma);
+            System.out.print("Digite o periodo: ");
+            String periodo = scanner.nextLine();
+            
+            Turma t = new Turma(novaTurma, periodo);
+            alunoEncontrado.setTurma(t);
             System.out.println("Aluno " + alunoEncontrado.getNome() + " mudou para a turma: " + novaTurma);
         } else {
             System.out.println("Aluno não encontrado.");
