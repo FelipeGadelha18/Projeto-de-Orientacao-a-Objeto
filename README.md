@@ -6,6 +6,7 @@
 * VÍTOR GABRIEL BASTOS LOPES
 * GILMAR BOMFIM DA COSTA JUNIOR
 * FELIPE GOMES GADELHA
+======================================
 **Sistema de Gestão Acadêmica**
 
 O **Sistema de Gestão Acadêmica** é projetado para gerenciar eficientemente alunos, funcionários e turmas de uma instituição de ensino. Ele oferece funcionalidades essenciais para o controle de dados institucionais e a automatização de processos administrativos.
@@ -72,4 +73,3 @@ O sistema oferece um conjunto completo de ferramentas para:
 - Listagem de turmas e funcionários, bem como monitoramento do total de gastos com a folha de pagamento
 - Facilitar a movimentação de alunos entre turmas
 
-Este sistema foi desenvolvido para atender às necessidades administrativas das instituições de ensino, garantindo eficiência, segurança e flexibilidade na gestão acadêmica.
